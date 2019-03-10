@@ -1,0 +1,75 @@
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!No documentation available at this time!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+BUILDROOT -- initial value for Build0/Build
+SRCROOT -- initial value for Source0/Source
+BUILDTYPE -- debug release minsize
+
+
+note: all %FLAGS and %LIBS are reset in subprojects
+
+
+yama.IsDug
+yama.Level
+yama.IsWindows
+yama.IsPOSIX
+yama.Build0
+yama.Source0
+yama.Build
+yama.Source
+yama.A
+yama.O
+yama.Dll
+yama.Exe
+yama.Sep
+yama.Space
+yama.NL
+
+
+Path utility functions:
+<bool> := $(call yama.pathIsAbs,<path>)
+<newpath> := $(call yama.pathWithSlash,<path>)
+<newpath> := $(call yama.pathOrDot,<path>)
+<newpath> := $(call yama.pathStrip,<path>)
+<newpath> := $(call yama.pathConcat,<path1>,<path2>)
+<newpath> := $(call yama.pathConcatWithSlash,<path1>,<path2>)
+<newpath> := $(call yama.pathConcatOrDot,<path1>,<path2>)
+
+
+Stack functions:
+$(call yama.push,<vars_list>)
+$(call yama.pop,<vars_list>)
+<val> := $(call yama.top,<var>)
+<val> := $(call yama.bottom,<var>)
+<num> := $(call yama.depth,<var>)
+
+
+<var> = $(call yama.lazyShell,<shell_command>,<var>)
+<new_string> := $(call yama.repeat,<string>,<number>)
+$(yama.random)
+
+
+Evaluate project options:
+$(call yama.options,<options_list>)
+
+
+Set implicit compilations rules:
+(known languages: c cpp lex yacc rcs re re2c re2cpp rc)
+$(call yama.rules,[build_directory],[source_directory],[languages_list])
+
+
+Define link targets:
+$(call yama.goalExe,<target>,<modules_list>,[binary_name],[build_subdir])
+$(call yama.goalDll,<target>,<modules_list>,[library_name],[build_subdir])
+$(call yama.goalLib,<target>,<modules_list>,[library_name],[build_subdir])
+
+
+Auto-dependency support:
+$(call yama.deps,<objects_list>)
+
+
+Subprojects include:
+$(call yama.subdirs,<subdirs_list>)
+$(call yama.subdir,<build_subdir>,[source_subdir],[include_file])

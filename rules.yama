@@ -1,0 +1,73 @@
+#
+# Proj: yama
+# File: rules.yama
+# Auth: MatveyT
+# Date: 10.03.2019
+# Desc: Yet Another GNU Make framework
+# Note: c cpp lex yacc rcs re re2c re2cpp rc
+#
+
+
+define yama.rules.c
+    $1%$(yama.O) : $1%.c $(if $1,| $1) ;\
+        $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $$@ $$<
+    $1%$(yama.O) : $2%.c $(if $1,| $1) ;\
+        $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $$@ $$<
+endef
+
+
+define yama.rules.cpp
+    $1%$(yama.O) : $1%.cpp $(if $1,| $1) ;\
+        $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $$@ $$<
+    $1%$(yama.O) : $2%.cpp $(if $1,| $1) ;\
+        $(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $$@ $$<
+endef
+
+
+define yama.rules.lex
+    $1%.c : $2%.l $(if $1,| $1) ;\
+        $(LEX) $(LFLAGS) -o $$@ $$<
+endef
+
+
+define yama.rules.yacc
+    $1%.c : $2%.y $(if $1,| $1) ;\
+        $(YACC) $(YFLAGS) -o $$@ $$<
+endef
+
+
+define yama.rules.rcs
+    $2% :: $2%,v ;\
+        +$$(if $$(wildcard $$@),,$(CO) $(COFLAGS) $$< $$@)
+    $2% :: $2RCS/%,v ;\
+        +$$(if $$(wildcard $$@),,$(CO) $(COFLAGS) $$< $$@)
+    $2% :: $2RCS/% ;\
+        +$$(if $$(wildcard $$@),,$(CO) $(COFLAGS) $$< $$@)
+endef
+
+
+RE2C := re2c
+REFLAGS0 := -W -is
+REFLAGS := $(REFLAGS)
+define yama.rules.re
+    $1%.c : $2%.re $(if $1,| $1) ;\
+        $(RE2C) $(REFLAGS) -o $$@ $$<
+endef
+define yama.rules.re2c
+    $1%.c : $2%.re2c $(if $1,| $1) ;\
+        $(RE2C) $(REFLAGS) -o $$@ $$<
+endef
+define yama.rules.re2cpp
+    $1%.cpp : $2%.re2cpp $(if $1,| $1) ;\
+        $(RE2C) $(REFLAGS) -o $$@ $$<
+endef
+
+
+# Windows Resource support
+ifdef yama.IsWindows
+    RC := windres
+    define yama.rules.rc
+        $1%$(yama.O) : $2%.rc $(if $1,| $1) ;\
+            $(RC) $(RCFLAGS) -o $$@ $$<
+    endef
+endif
