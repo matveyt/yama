@@ -1,8 +1,6 @@
 #
 # Proj: yama
-# File: rules.yama
 # Auth: MatveyT
-# Date: 10.03.2019
 # Desc: Yet Another GNU Make framework
 # Note: c cpp lex yacc rcs re re2c re2cpp rc
 #

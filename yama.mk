@@ -1,8 +1,6 @@
 #
 # Proj: yama
-# File: yama.mk
 # Auth: MatveyT
-# Date: 10.03.2019
 # Desc: Yet Another GNU Make framework
 # Note: None
 #
