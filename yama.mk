@@ -1,6 +1,6 @@
 #
 # Proj: yama
-# Auth: MatveyT
+# Auth: matveyt
 # Desc: Yet Another GNU Make framework
 # Note: None
 #
