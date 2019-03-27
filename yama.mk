@@ -65,10 +65,10 @@ yama.IsPOSIX := $(if $(filter /%,$(CURDIR)),1)
 yama.Latin := A a B b C c D d E e F f G g H h I i J j K k L l M m
 yama.Latin += N n O o P p Q q R r S s T t U u V v W w X x Y y Z z
 ifdef yama.IsWindows
-    yama.pathIsAbs = $(if $(filter /% \\%\
-        $(foreach foo$0,$(yama.Latin),$(foo$0):/% $(foo$0)\\%),$1),1)
+    yama.pathIsAbs = $(if $(filter /% \\% $(if $(yama.IsPOSIX),~%)\
+        $(foreach foo$0,$(yama.Latin),$(foo$0):/% $(foo$0):\\%),$1),1)
 else
-    yama.pathIsAbs = $(if $(filter /%,$1),1)
+    yama.pathIsAbs = $(if $(filter /% ~%,$1),1)
 endif
 yama.pathWithSlash = $(if $(filter-out %/,$1),$1/,$1)
 yama.pathOrDot = $(or $1,.)
