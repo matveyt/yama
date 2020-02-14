@@ -17,7 +17,7 @@ ifndef yama.IsDug
 
 
 # global init
-.PHONY : all
+.PHONY: all
 .DEFAULT_GOAL := all
 BUILDROOT ?= $(CURDIR)
 SRCROOT ?= $(dir $(firstword $(MAKEFILE_LIST)))
@@ -155,10 +155,10 @@ yama.options = $(eval $(foreach foo$0,$1,\
 define yama.goalExe.text
     $(eval foo$0 := $(patsubst %,$4%$(yama.O),$2))
     $(if $(subst x$1,,x$3)$(subst x$3,,x$1),\
-        .PHONY : $1$(yama.NL)\
-        $1 : $3$(yama.NL)\
+        .PHONY: $1$(yama.NL)\
+        $1: $3$(yama.NL)\
     )
-    $3 : $(foo$0) $(if $($1.Objects),,;\
+    $3: $(foo$0) $(if $($1.Objects),,;\
         $(CC) $(LDFLAGS) $$^ $(LDLIBS) -o $$@)
     $1.Objects := $($1.Objects) $(foo$0)
 endef
@@ -175,15 +175,15 @@ yama.goalExe = $(eval \
 define yama.goalDll.text
     $(eval foo$0 := $(patsubst %,$4%$(yama.O),$2))
     $(if $(subst x$1,,x$3)$(subst x$3,,x$1),\
-        .PHONY : $1$(yama.NL)\
-        $1 : $3$(yama.NL)\
+        .PHONY: $1$(yama.NL)\
+        $1: $3$(yama.NL)\
     )
 ifdef yama.IsWindows
-    $3 : $(foo$0) $(if $($1.Objects),,;\
+    $3: $(foo$0) $(if $($1.Objects),,;\
         $(CC) -shared -Wl,--out-implib,$$(@D)/lib$$(@F)$(yama.A)\
             $(LDFLAGS) $$^ $(LDLIBS) -o $$@)
 else
-    $3 : $(foo$0) $(if $($1.Objects),,;\
+    $3: $(foo$0) $(if $($1.Objects),,;\
         $(CC) -shared $(LDFLAGS) $$^ $(LDLIBS) -o $$@)
 endif
     $1.Objects := $($1.Objects) $(foo$0)
@@ -201,10 +201,10 @@ yama.goalDll = $(eval \
 define yama.goalLib.text
     $(eval foo$0 := $(patsubst %,$4%$(yama.O),$2))
     $(if $(subst x$1,,x$3)$(subst x$3,,x$1),\
-        .PHONY : $1$(yama.NL)\
-        $1 : $3$(yama.NL)\
+        .PHONY: $1$(yama.NL)\
+        $1: $3$(yama.NL)\
     )
-    $3 : $(foo$0) $(if $($1.Objects),,;\
+    $3: $(foo$0) $(if $($1.Objects),,;\
         $(AR) $(ARFLAGS) $$@ $$?)
     $1.Objects := $($1.Objects) $(foo$0)
 endef
@@ -219,7 +219,7 @@ yama.goalLib = $(eval \
 
 # $(call yama.rules,[build_directory],[source_directory],[languages_list])
 define yama.rules.text
-    $(if $1,$1 : ;mkdir -p $$@)
+    $(if $1,$1: ;mkdir -p $$@)
     $(foreach foo$0,$3,\
         $(call yama.rules.$(foo$0),$1,$2)$(yama.NL)\
     )
@@ -239,19 +239,19 @@ UPDBDEPS := updbdeps -z 10m --remove
 yama.DEPS := $(yama.Build0).deps
 define yama.deps.text
     $(foreach foo$0,$1,\
-        $(foo$0) : $(foo$0:$(yama.O)=.d)$(yama.NL)\
-        $(foo$0:$(yama.O)=.d) : ;$(yama.NL)\
+        $(foo$0): $(foo$0:$(yama.O)=.d)$(yama.NL)\
+        $(foo$0:$(yama.O)=.d): ;$(yama.NL)\
     )
     include $(wildcard $(1:$(yama.O)=.d))
 endef
 define yama.deps.text2.once
     $(dbdeps $(yama.DEPS))
-    all : $(yama.DEPS)/data.mdb
+    all: $(yama.DEPS)/data.mdb
     undefine yama.deps.text2.once
 endef
 define yama.deps.text2
     $(yama.deps.text2.once)
-    $(yama.DEPS)/data.mdb :: $1;\
+    $(yama.DEPS)/data.mdb:: $1;\
         $(UPDBDEPS) $$(?:$(yama.O)=.d) -d $$(@D)
 endef
 yama.deps = $(eval \
